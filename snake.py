@@ -33,14 +33,8 @@ def main():
     # event loop
     while playing:
 
-        # debug in console
+        # fps
         print(f"{CLOCK}")
-        print(f"Score: {SCORE}")
-        print(f"dir {snake.dir}")
-        print(f"sx{snake.body[0][0]} sy{snake.body[0][1]}")
-        print(f"fx{food.x} fy{food.y}")
-        print(snake.body)
-        print(snake.length)
 
         # key presses
         for event in pygame.event.get():
@@ -79,17 +73,16 @@ def main():
 
         # boundary collision
         if snake.body[0][0] < 0 or snake.body[0][1] < 0 or snake.body[0][0] > (WIDTH - TILE_SIZE) or snake.body[0][1] > (HEIGHT - TILE_SIZE):
-            exit("boop")
+            exit(f"Boop, boundary collision. Game over, your final score was {SCORE}")
 
         # hit itself
         for n in range(1, len(snake.body) - 1):
             if snake.body[0][0] == snake.body[n][0] and snake.body[0][1] == snake.body[n][1]:
-                print("collision with self")
+                print(f"You ate part of yourself. Game over, your final score was {SCORE}")
                 exit()
 
         # nom the food
         if snake.body[0][0] == food.x and snake.body[0][1] == food.y:
-            print("collision with food")
             # add old x,y to snake
             snake.length += 1
             SCORE += 10
@@ -105,17 +98,17 @@ def main():
         # fill screen
         SCREEN.fill(BLACK)
         # draw objects
-        draw_grid()  # debug
+        draw_grid()
         for object in objects:
             object.draw()
 
         pygame.display.update()
         sleep(0.075)
         CLOCK.tick(MAX_FPS)
-        system('clear')  # debug
+        system('clear')
 
 
-def draw_grid():  # debug
+def draw_grid():
     for x in range(0, WIDTH, TILE_SIZE):
         for y in range(0, HEIGHT, TILE_SIZE):
             rect = pygame.Rect(x, y, TILE_SIZE, TILE_SIZE)
@@ -150,8 +143,8 @@ class Food:
         pygame.draw.rect(SCREEN, self.color, rect)
 
 
-snake = Snake(32, 32, BLUE, 0)
-food = Food(64, 64, RED)
+snake = Snake(128, 128, BLUE, 0)
+food = Food(256, 256, RED)
 objects = []
 objects.append(snake)
 objects.append(food)
